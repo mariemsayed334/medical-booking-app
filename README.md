@@ -73,6 +73,21 @@ Add the final screenshots to `docs/screenshots/` before submission:
    npm run dev      # Vite dev server on port 5173
    ```
 
+## Vercel deployment
+
+Vercel serves the React frontend, but it cannot reach the local
+`http://localhost:3001` API from a phone or another computer. Deploy the
+json-server API (or replace it with Supabase/Firebase/another hosted REST API)
+and add this Vercel environment variable before redeploying:
+
+```text
+VITE_API_BASE_URL=https://YOUR-HOSTED-API-URL
+```
+
+The included `vercel.json` rewrites direct client-side routes such as
+`/doctors/8` to the React entry point. The frontend and API must both be
+running for Doctors and Appointments to load and for appointment CRUD to work.
+
 ## Features
 
 - **Doctors list** — browse all doctors, search by name (debounced), and
