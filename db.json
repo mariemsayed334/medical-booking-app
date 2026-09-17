@@ -1,0 +1,99 @@
+{
+  "doctors": [
+    {
+      "id": "1",
+      "name": "Dr. Manal El-Sayed",
+      "specialty": "Cardiology",
+      "rating": 4.8,
+      "yearsExperience": 12,
+      "location": "Nasr City, Cairo",
+      "photo": "/images/Manal.jpg",
+      "bio": "Dr. Mona specializes in preventive cardiology and heart rhythm disorders, with over a decade of experience treating patients of all ages."
+    },
+    {
+      "id": "2",
+      "name": "Dr. Ahmed Khaled",
+      "specialty": "Dermatology",
+      "rating": 4.6,
+      "yearsExperience": 8,
+      "location": "Maadi, Cairo",
+      "photo": "/images/AhmedKhaled.jpg",
+      "bio": "Dr. Ahmed focuses on skin health, acne treatment, and cosmetic dermatology using the latest evidence-based techniques."
+    },
+    {
+      "id": "3",
+      "name": "Dr. Laila Hassan",
+      "specialty": "Pediatrics",
+      "rating": 4.9,
+      "yearsExperience": 15,
+      "location": "Heliopolis, Cairo",
+      "photo": "/images/Laila Hassan.jpg",
+      "bio": "Dr. Laila has dedicated her career to child health, from routine checkups to managing chronic pediatric conditions."
+    },
+    {
+      "id": "4",
+      "name": "Dr. Omar Farouk",
+      "specialty": "Orthopedics",
+      "rating": 4.5,
+      "yearsExperience": 10,
+      "location": "6th of October, Giza",
+      "photo": "/images/Omar.jpg",
+      "bio": "Dr. Omar treats sports injuries, joint pain, and fractures, helping patients regain mobility through modern orthopedic care."
+    },
+    {
+      "id": "5",
+      "name": "Dr. Nourhan Adel",
+      "specialty": "Dentistry",
+      "rating": 4.7,
+      "yearsExperience": 6,
+      "location": "Zamalek, Cairo",
+      "photo": "/images/Nourhan.jpg",
+      "bio": "Dr. Nourhan provides general and cosmetic dental care, with a gentle approach that puts anxious patients at ease."
+    },
+    {
+      "id": "6",
+      "name": "Dr. Youssef Adly",
+      "specialty": "Neurology",
+      "rating": 4.9,
+      "yearsExperience": 18,
+      "location": "Dokki, Giza",
+      "photo": "/images/Youssef.jpg",
+      "bio": "Dr. Youssef is an experienced neurologist specializing in headache disorders, epilepsy, and stroke management."
+    },
+    {
+      "id": "7",
+      "name": "Dr. Rana Sherif",
+      "specialty": "Ophthalmology",
+      "rating": 4.6,
+      "yearsExperience": 9,
+      "location": "Fayoum, Fayoum",
+      "photo": "/images/Rana.jpg",
+      "bio": "Dr. Rana offers comprehensive eye exams, treatment for vision disorders, and pre/post cataract surgery care."
+    },
+    {
+      "id": "8",
+      "name": "Dr. Karim Mostafa",
+      "specialty": "Cardiology",
+      "rating": 4.4,
+      "yearsExperience": 7,
+      "location": "Fayoum, Fayoum",
+      "photo": "/images/Karim.jpg",
+      "bio": "Dr. Karim focuses on early detection and management of cardiovascular disease for adult patients."
+    }
+  ],
+  "appointments": [
+    {
+      "doctorId": "5",
+      "doctorName": "Dr. Nourhan Adel",
+      "specialty": "Dentistry",
+      "status": "upcoming",
+      "patientName": "مريم سيد يوسف عباس ",
+      "phone": "01033272396",
+      "date": "2026-09-27",
+      "time": "05:17",
+      "notes": "",
+      "id": "oSZpSLjpYyA"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
