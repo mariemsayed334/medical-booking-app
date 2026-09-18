@@ -32,6 +32,7 @@ export default function DoctorCard({ doctor }) {
           <img
             src={doctor.photo}
             alt={doctor.name}
+            loading="lazy"
             className="h-20 w-20 shrink-0 rounded-xl bg-mist object-contain p-1"
           />
           <div className="min-w-0">

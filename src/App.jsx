@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Doctors from './pages/Doctors';
-import DoctorDetails from './pages/DoctorDetails';
-import BookAppointment from './pages/BookAppointment';
-import Appointments from './pages/Appointments';
-import Profile from './pages/Profile';
-import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
+import LoadingState from './components/LoadingState';
+
+const Doctors = lazy(() => import('./pages/Doctors'));
+const DoctorDetails = lazy(() => import('./pages/DoctorDetails'));
+const BookAppointment = lazy(() => import('./pages/BookAppointment'));
+const Appointments = lazy(() => import('./pages/Appointments'));
+const Profile = lazy(() => import('./pages/Profile'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
   const [theme, setTheme] = useState(() => {
@@ -26,15 +28,17 @@ export default function App() {
     <div className="flex min-h-screen flex-col">
       <Navbar theme={theme} toggleTheme={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))} />
       <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/doctors" element={<Doctors />} />
-          <Route path="/doctors/:id" element={<DoctorDetails />} />
-          <Route path="/book/:doctorId" element={<BookAppointment />} />
-          <Route path="/appointments" element={<Appointments />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<LoadingState label="Loading page..." />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/doctors" element={<Doctors />} />
+            <Route path="/doctors/:id" element={<DoctorDetails />} />
+            <Route path="/book/:doctorId" element={<BookAppointment />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer />
     </div>
