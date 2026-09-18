@@ -3,9 +3,6 @@ import path from 'node:path';
 
 const DB_PATH = path.join(process.cwd(), 'db.json');
 let memoryDb = null;
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const hasSupabase = Boolean(supabaseUrl && supabaseServiceRoleKey);
 
 const defaultDb = () => ({
   doctors: [],
@@ -45,105 +42,6 @@ const sendJson = (res, statusCode, payload) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.end(JSON.stringify(payload));
-};
-
-const supabaseRequest = async (resource, options = {}) => {
-  const response = await fetch(`${supabaseUrl}/rest/v1/${resource}`, {
-    ...options,
-    headers: {
-      apikey: supabaseServiceRoleKey,
-      Authorization: `Bearer ${supabaseServiceRoleKey}`,
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
-
-  const responseText = await response.text();
-  const data = responseText ? JSON.parse(responseText) : null;
-
-  if (!response.ok) {
-    const error = new Error(data?.message || data?.hint || 'Supabase request failed.');
-    error.statusCode = response.status;
-    throw error;
-  }
-
-  return data;
-};
-
-const toAppointmentRow = (appointment) => ({
-  id: appointment.id || generateId(),
-  doctor_id: appointment.doctorId,
-  doctor_name: appointment.doctorName,
-  specialty: appointment.specialty,
-  status: appointment.status || 'upcoming',
-  patient_name: appointment.patientName,
-  phone: appointment.phone,
-  date: appointment.date,
-  time: appointment.time,
-  notes: appointment.notes || '',
-});
-
-const fromAppointmentRow = (appointment) => ({
-  id: appointment.id,
-  doctorId: appointment.doctor_id,
-  doctorName: appointment.doctor_name,
-  specialty: appointment.specialty,
-  status: appointment.status,
-  patientName: appointment.patient_name,
-  phone: appointment.phone,
-  date: appointment.date,
-  time: appointment.time,
-  notes: appointment.notes || '',
-});
-
-const handleSupabaseAppointments = async (req, res, id) => {
-  try {
-    if (req.method === 'GET') {
-      const query = new URLSearchParams({ select: '*', order: 'date.asc' });
-      if (id) query.set('id', `eq.${id}`);
-      const data = await supabaseRequest(`appointments?${query}`);
-
-      if (id && data.length === 0) {
-        sendJson(res, 404, { message: 'Item not found' });
-        return;
-      }
-
-      sendJson(res, 200, id ? fromAppointmentRow(data[0]) : data.map(fromAppointmentRow));
-      return;
-    }
-
-    if (req.method === 'POST') {
-      const body = await readBody(req);
-      const data = await supabaseRequest('appointments', {
-        method: 'POST',
-        headers: { Prefer: 'return=representation' },
-        body: JSON.stringify(toAppointmentRow(body)),
-      });
-      sendJson(res, 201, fromAppointmentRow(data[0]));
-      return;
-    }
-
-    if (req.method === 'PATCH') {
-      const body = await readBody(req);
-      const data = await supabaseRequest(`appointments?id=eq.${id}`, {
-        method: 'PATCH',
-        headers: { Prefer: 'return=representation' },
-        body: JSON.stringify(toAppointmentRow({ ...body, id })),
-      });
-      sendJson(res, 200, fromAppointmentRow(data[0]));
-      return;
-    }
-
-    if (req.method === 'DELETE') {
-      await supabaseRequest(`appointments?id=eq.${id}`, { method: 'DELETE' });
-      sendJson(res, 200, { id });
-      return;
-    }
-
-    sendJson(res, 405, { message: 'Method not allowed' });
-  } catch (error) {
-    sendJson(res, error.statusCode || 500, { message: error.message || 'Database request failed.' });
-  }
 };
 
 const sortCollection = (items, sortKey) => {
@@ -196,12 +94,6 @@ export default async function handler(req, res) {
   }
 
   const [resource, id] = pathParts;
-
-  if (resource === 'appointments' && hasSupabase) {
-    await handleSupabaseAppointments(req, res, id);
-    return;
-  }
-
   const db = await readDb();
   const collection = db[resource];
 
