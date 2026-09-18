@@ -13,6 +13,25 @@ const todayStr = new Date().toISOString().split('T')[0];
 const inputClass =
   'w-full rounded-xl border-0 bg-white py-3 pl-11 pr-4 text-sm text-ink outline-none ring-1 ring-white/10 placeholder:text-ink-soft/70 focus:ring-2 focus:ring-teal';
 
+const normalizePhone = (value = '') => {
+  const digits = String(value).replace(/\D/g, '');
+  if (!digits) return '';
+
+  if (digits.startsWith('966') && digits.length === 12) {
+    return `0${digits.slice(3)}`;
+  }
+
+  if (digits.startsWith('00')) {
+    return digits.slice(2);
+  }
+
+  if (digits.startsWith('+')) {
+    return digits.replace(/^\+/, '');
+  }
+
+  return digits;
+};
+
 export default function BookAppointment() {
   const { doctorId } = useParams();
   const navigate = useNavigate();
@@ -68,12 +87,31 @@ export default function BookAppointment() {
   const onSubmit = async (values) => {
     setSubmitError(null);
     try {
+      const normalizedValues = {
+        ...values,
+        patientName: String(values.patientName || '').trim(),
+        phone: normalizePhone(values.phone),
+        date: String(values.date || '').trim(),
+        time: String(values.time || '').trim(),
+        notes: String(values.notes || '').trim(),
+      };
+
+      if (!normalizedValues.patientName || !normalizedValues.phone || !normalizedValues.date || !normalizedValues.time) {
+        setSubmitError('Please complete all required fields before booking.');
+        return;
+      }
+
+      if (!/^01[0-2,5][0-9]{8}$/.test(normalizedValues.phone)) {
+        setSubmitError('Please enter a valid Egyptian mobile number.');
+        return;
+      }
+
       const payload = {
         doctorId: doctor.id,
         doctorName: doctor.name,
         specialty: doctor.specialty,
         status: 'upcoming',
-        ...values,
+        ...normalizedValues,
       };
 
       if (editingAppointment) {
@@ -168,6 +206,7 @@ export default function BookAppointment() {
                     {...register('patientName', {
                       required: 'Please enter your full name.',
                       minLength: { value: 3, message: 'Name is too short.' },
+                      setValueAs: (value) => String(value || '').trim(),
                     })}
                   />
                 </label>
@@ -184,13 +223,12 @@ export default function BookAppointment() {
                   <input
                     type="tel"
                     placeholder="Phone number"
+                    inputMode="numeric"
                     className={inputClass}
                     {...register('phone', {
                       required: 'Please enter a phone number.',
-                      pattern: {
-                        value: /^01[0-2,5]{1}[0-9]{8}$/,
-                        message: 'Enter a valid Egyptian phone number.',
-                      },
+                      setValueAs: (value) => normalizePhone(value),
+                      validate: (value) => !value || /^01[0-2,5][0-9]{8}$/.test(normalizePhone(value)) || 'Enter a valid Egyptian phone number.',
                     })}
                   />
                 </label>
@@ -244,6 +282,7 @@ export default function BookAppointment() {
                   className={`resize-none ${inputClass}`}
                   {...register('notes', {
                     maxLength: { value: 300, message: 'Keep notes under 300 characters.' },
+                    setValueAs: (value) => String(value || '').trim(),
                   })}
                 />
               </label>
