@@ -2,14 +2,37 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const DB_PATH = path.join(process.cwd(), 'db.json');
+let memoryDb = null;
+
+const defaultDb = () => ({
+  doctors: [],
+  appointments: [],
+});
 
 const readDb = async () => {
-  const raw = await fs.readFile(DB_PATH, 'utf8');
-  return JSON.parse(raw);
+  try {
+    const raw = await fs.readFile(DB_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    memoryDb = parsed;
+    return parsed;
+  } catch (error) {
+    if (!memoryDb) {
+      memoryDb = defaultDb();
+    }
+    return memoryDb;
+  }
 };
 
 const writeDb = async (db) => {
-  await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
+  memoryDb = db;
+
+  try {
+    await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
+    return true;
+  } catch (error) {
+    console.warn('Database write failed; using in-memory fallback.', error.message);
+    return false;
+  }
 };
 
 const sendJson = (res, statusCode, payload) => {
