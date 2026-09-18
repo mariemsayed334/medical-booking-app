@@ -51,6 +51,8 @@ export default function BookAppointment() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
     defaultValues: {
       patientName: editingAppointment?.patientName || '',
       phone: editingAppointment?.phone || '',
