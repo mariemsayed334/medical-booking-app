@@ -5,6 +5,8 @@ import LoadingState from '../components/LoadingState';
 import ErrorState from '../components/ErrorState';
 import EmptyState from '../components/EmptyState';
 
+const PAGE_SIZE = 6;
+
 export default function Doctors() {
   const {
     doctors,
@@ -18,12 +20,16 @@ export default function Doctors() {
   } = useDoctorsStore();
 
   const [searchInput, setSearchInput] = useState(search);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Debounced search: waits 400ms after typing stops before querying
   useEffect(() => {
     const timer = setTimeout(() => setSearch(searchInput), 400);
     return () => clearTimeout(timer);
   }, [searchInput, setSearch]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, specialty]);
 
   useEffect(() => {
     loadDoctors();
@@ -33,6 +39,13 @@ export default function Doctors() {
   const specialties = useMemo(
     () => Array.from(new Set(doctors.map((d) => d.specialty))).sort(),
     [doctors]
+  );
+
+  const totalPages = Math.max(1, Math.ceil(doctors.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedDoctors = doctors.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE
   );
 
   return (
@@ -81,11 +94,39 @@ export default function Doctors() {
         )}
 
         {status === 'success' && doctors.length > 0 && (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {doctors.map((doctor) => (
-              <DoctorCard key={doctor.id} doctor={doctor} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {paginatedDoctors.map((doctor) => (
+                <DoctorCard key={doctor.id} doctor={doctor} />
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col items-center justify-between gap-3 sm:flex-row">
+              <p className="text-sm text-ink-soft">
+                Page {safePage} of {totalPages}
+              </p>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                  disabled={safePage === 1}
+                  className="rounded-full border border-teal-100 bg-white px-4 py-2 text-sm font-medium text-ink-soft disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Previous
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+                  disabled={safePage === totalPages}
+                  className="rounded-full bg-pine px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>
