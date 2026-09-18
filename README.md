@@ -118,6 +118,21 @@ managed backend such as Supabase, Firebase, or Retool. Set its base URL with
 change it to `PUT` in `src/api/appointments.js` if the hosted API requires
 full-resource replacement.
 
+### Shared appointment storage with Supabase
+
+Run `supabase-schema.sql` in the Supabase SQL editor, then add these Vercel
+environment variables for the API function:
+
+```text
+SUPABASE_URL=https://YOUR-PROJECT.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVER_ONLY_SERVICE_ROLE_KEY
+```
+
+Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. When both variables exist, the
+API stores all appointments in Supabase, so bookings from different users are
+visible from `GET /api/appointments`. Without them, local development falls
+back to `db.json`.
+
 ## Available scripts
 
 | Script            | Description                                  |
