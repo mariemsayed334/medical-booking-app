@@ -54,7 +54,17 @@ const useAppointmentsStore = create((set, get) => ({
   },
 
   editAppointment: async (id, payload) => {
-    const updated = await updateAppointment(id, payload);
+    let updated;
+    try {
+      updated = await updateAppointment(id, payload);
+    } catch (error) {
+      if (error?.response?.status !== 404) {
+        throw error;
+      }
+
+      updated = { ...payload, id };
+    }
+
     const localAppointments = readLocalAppointments();
     const hasLocalAppointment = localAppointments.some((appointment) => appointment.id === id);
     saveLocalAppointments(
@@ -69,7 +79,14 @@ const useAppointmentsStore = create((set, get) => ({
   },
 
   removeAppointment: async (id) => {
-    await deleteAppointment(id);
+    try {
+      await deleteAppointment(id);
+    } catch (error) {
+      if (error?.response?.status !== 404) {
+        throw error;
+      }
+    }
+
     saveLocalAppointments(readLocalAppointments().filter((appointment) => appointment.id !== id));
     set({
       appointments: get().appointments.filter((a) => a.id !== id),

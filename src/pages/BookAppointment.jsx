@@ -134,7 +134,7 @@ export default function BookAppointment() {
   if (!doctor) return null;
 
   return (
-    <div className="mx-auto max-w-5xl px-5 py-10">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-5 sm:py-10">
       <Link
         to={`/doctors/${doctor.id}`}
         className="flex items-center gap-1.5 text-sm font-medium text-pine hover:underline"
@@ -147,7 +147,7 @@ export default function BookAppointment() {
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         {/* Doctor summary card */}
-        <div className="rounded-3xl border border-teal-100 bg-white p-6 shadow-sm">
+        <div className="min-w-0 rounded-3xl border border-teal-100 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex items-center gap-4">
             <div className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-mist p-1">
               <img
@@ -183,7 +183,7 @@ export default function BookAppointment() {
 
         {/* Booking form */}
         <div
-          className="rounded-3xl p-7 text-white shadow-lg sm:p-9"
+          className="min-w-0 rounded-3xl p-5 text-white shadow-lg sm:p-7 lg:p-9"
           style={{ background: 'linear-gradient(160deg,#123B75 0%,#0C2A54 100%)' }}
         >
           <h1 className="text-xl font-bold">

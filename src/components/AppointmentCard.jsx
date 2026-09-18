@@ -28,16 +28,16 @@ export default function AppointmentCard({ appointment, onReschedule, onCancel })
       </div>
 
       {status !== 'cancelled' && (
-        <div className="flex shrink-0 gap-2">
+        <div className="flex w-full shrink-0 flex-wrap gap-2 sm:w-auto">
           <button
             onClick={() => onReschedule(appointment)}
-            className="rounded-full border border-pine px-4 py-2 text-sm font-medium text-pine transition hover:bg-teal-100"
+            className="min-w-0 flex-1 rounded-full border border-pine px-3 py-2 text-sm font-medium text-pine transition hover:bg-teal-100 sm:flex-none sm:px-4"
           >
             Reschedule
           </button>
           <button
             onClick={() => onCancel(appointment)}
-            className="rounded-full border border-brick px-4 py-2 text-sm font-medium text-brick transition hover:bg-brick-100"
+            className="min-w-0 flex-1 rounded-full border border-brick px-3 py-2 text-sm font-medium text-brick transition hover:bg-brick-100 sm:flex-none sm:px-4"
           >
             Cancel
           </button>
