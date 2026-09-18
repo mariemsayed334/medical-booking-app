@@ -8,7 +8,7 @@ const links = [
   { to: '/profile', label: 'Profile' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ theme, toggleTheme }) {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -44,6 +44,15 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label="Toggle dark mode"
+                onClick={toggleTheme}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-teal-200 bg-teal-100 text-lg text-pine shadow-sm transition hover:bg-teal-200"
+              >
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
+
               <button
                 onClick={() => navigate('/doctors')}
                 className="hidden rounded-full bg-pine px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-pine-600 sm:inline-flex"
