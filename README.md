@@ -31,7 +31,7 @@ db.json           mock database for json-server (doctors + appointments)
 
 - **Deployed app:** `ADD_DEPLOYED_APP_URL`
 - **GitHub repository:** `ADD_GITHUB_REPOSITORY_URL`
-- **Commit history:** [View commits](ADD_GITHUB_COMMITS_URL)
+- **Commit history:** [View commits](https://github.com/mariemsayed334/medical-booking-app/commits/main)
 
 ## Screenshots
 
