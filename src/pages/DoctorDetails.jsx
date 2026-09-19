@@ -35,8 +35,14 @@ export default function DoctorDetails() {
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-10">
-      <Link to="/doctors" className="text-sm font-medium text-pine hover:underline">
-        ← Back to doctors
+      <Link
+        to="/doctors"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-pine hover:underline"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span>Back to doctors</span>
       </Link>
 
       <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-teal-100 bg-white p-6 sm:flex-row">
