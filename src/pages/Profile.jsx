@@ -45,7 +45,7 @@ export default function Profile() {
             type="checkbox"
             checked={notifications}
             onChange={(event) => setNotifications(event.target.checked)}
-            className="h-5 w-5 accent-pine"
+            className="h-5 w-5 accent-current"
           />
         </label>
         <button type="submit" className="mt-6 rounded-full bg-pine px-6 py-3 text-sm font-semibold text-white transition hover:bg-pine-600">
