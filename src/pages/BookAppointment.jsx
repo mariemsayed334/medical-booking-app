@@ -250,7 +250,7 @@ export default function BookAppointment() {
                   <input
                     type="date"
                     min={todayStr}
-                    className={inputClass}
+                    className={`${inputClass} pr-12`}
                     {...register('date', { required: 'Please choose a date.' })}
                   />
                 </label>
@@ -265,7 +265,7 @@ export default function BookAppointment() {
                   </svg>
                   <input
                     type="time"
-                    className={inputClass}
+                    className={`${inputClass} pr-12`}
                     {...register('time', { required: 'Please choose a time.' })}
                   />
                 </label>
