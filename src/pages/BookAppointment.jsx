@@ -149,7 +149,7 @@ export default function BookAppointment() {
         {/* Doctor summary card */}
         <div className="min-w-0 rounded-3xl border border-teal-100 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex items-center gap-4">
-            <div className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-mist p-1">
+            <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-mist p-1">
               <img
                 src={doctor.photo}
                 alt={doctor.name}

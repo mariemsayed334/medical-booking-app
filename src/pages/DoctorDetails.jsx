@@ -44,7 +44,7 @@ export default function DoctorDetails() {
           src={doctor.photo}
           alt={doctor.name}
           loading="lazy"
-          className="h-36 w-36 shrink-0 rounded-2xl bg-mist object-contain p-1"
+            className="h-36 w-36 shrink-0 rounded-lg bg-mist object-contain p-1"
         />
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl font-bold text-ink">{doctor.name}</h1>

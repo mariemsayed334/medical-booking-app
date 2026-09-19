@@ -33,7 +33,7 @@ export default function DoctorCard({ doctor }) {
             src={doctor.photo}
             alt={doctor.name}
             loading="lazy"
-            className="h-20 w-20 shrink-0 rounded-xl bg-mist object-contain p-1"
+            className="h-20 w-20 shrink-0 rounded-lg bg-mist object-contain p-1"
           />
           <div className="min-w-0">
             <h3 className="truncate font-semibold text-ink">{doctor.name}</h3>
